@@ -13,7 +13,7 @@ struct ContentView: View {
         NavigationView {
             List(resorts) { resort in
                 NavigationLink {
-                    Text(resort.name)
+                    ResortView(resort: resort)
                 } label: {
                     Image(resort.country)
                         .resizable()
@@ -36,6 +36,19 @@ struct ContentView: View {
             .navigationTitle("Resorts")
             
             WelcomeView()
+        }
+    }
+}
+
+/* This extension disables slide over view in landscape on bigger iPhones and iPads.
+    To use it add .phoneOnlyStackNavigationView() modifier to the navigationView above.
+ */
+extension View {
+    @ViewBuilder func phoneOnlyStackNavigationView() -> some View {
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            self.navigationViewStyle(.stack)
+        } else {
+            self
         }
     }
 }
