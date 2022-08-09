@@ -17,6 +17,13 @@ struct ResortView: View {
                     .resizable()
                     .scaledToFit()
                 
+                HStack {
+                    ResortDetailsView(resort: resort)
+                    SkiDetailsView(resort: resort)
+                }
+                .padding(.vertical)
+                .background(Color.primary.opacity(0.1))
+                
                 Group {
                     Text(resort.description)
                         .padding(.vertical)
@@ -24,7 +31,7 @@ struct ResortView: View {
                     Text("Facilities")
                         .font(.headline)
                     
-                    Text(resort.facilities.joined(separator: ", "))
+                    Text(resort.facilities, format: .list(type: .and))
                         .padding(.vertical)
                 }
                 .padding(.horizontal)
