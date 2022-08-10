@@ -29,7 +29,7 @@ struct Facility: Identifiable {
         }
     }
     
-    // Descriptions used for alerts.
+    // descriptions used for alerts
     private let descriptions = [
         "Accommodation": "This resort has popular on-site accommodation.",
         "Beginners": "This resort has lots of ski schools.",

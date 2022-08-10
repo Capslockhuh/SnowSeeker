@@ -18,6 +18,7 @@ struct ContentView: View {
             return resorts.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
     }
 }
+    @StateObject var favorites = Favorites()
     
     var body: some View {
         NavigationView {
@@ -25,21 +26,29 @@ struct ContentView: View {
                 NavigationLink {
                     ResortView(resort: resort)
                 } label: {
-                    Image(resort.country)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 40, height: 25)
-                        .clipShape(RoundedRectangle(cornerRadius: 5))
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 5)
-                                .stroke(.black, lineWidth: 1)
-                        )
-                    
-                    VStack(alignment: .leading) {
-                        Text(resort.name)
-                            .font(.headline)
-                        Text("\(resort.runs) runs")
-                            .foregroundColor(.secondary)
+                    HStack {
+                        Image(resort.country)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 40, height: 25)
+                            .clipShape(RoundedRectangle(cornerRadius: 5))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 5)
+                                    .stroke(.black, lineWidth: 1)
+                            )
+                        if favorites.contains(resort) {
+                            Spacer()
+                            Image(systemName: "heart.fill")
+                            .accessibilityLabel("This is a favorite resort")
+                                .foregroundColor(.red)
+                        }
+                        
+                        VStack(alignment: .leading) {
+                            Text(resort.name)
+                                .font(.headline)
+                            Text("\(resort.runs) runs")
+                                .foregroundColor(.secondary)
+                        }
                     }
                 }
             }
@@ -48,6 +57,7 @@ struct ContentView: View {
             
             WelcomeView()
         }
+        .environmentObject(favorites)
     }
 }
 
