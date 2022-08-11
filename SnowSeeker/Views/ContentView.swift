@@ -11,6 +11,8 @@ struct ContentView: View {
     let resorts: [Resort] = Bundle.main.decode("resorts.json")
     @State private var searchText = ""
     
+    @State private var sortSelection = 0
+    
     var filteredResorts: [Resort] {
         if searchText.isEmpty {
             return resorts
@@ -20,9 +22,25 @@ struct ContentView: View {
 }
     @StateObject var favorites = Favorites()
     
+    @State private var sorted: [Resort] = []
+    
     var body: some View {
         NavigationView {
-            List(filteredResorts) { resort in
+            VStack {
+                Section(header: Text("Sort type")) {
+                    Picker(selection: $sortSelection, label: Text("Sort")) {
+                        Text("Default").tag(0)
+                        Text("Alphabetical").tag(1)
+                        Text("Country").tag(2)
+                    }
+                }
+                .pickerStyle(SegmentedPickerStyle())
+                .padding([.leading, .trailing])
+                .onChange(of: sortSelection) { _ in
+                    self.sortResorts()
+                }
+                
+            List(sorted) { resort in
                 NavigationLink {
                     ResortView(resort: resort)
                 } label: {
@@ -52,6 +70,7 @@ struct ContentView: View {
                     }
                 }
             }
+            }
             .navigationTitle("Resorts")
             .searchable(text: $searchText, prompt: "Search for a resort")
             
@@ -59,6 +78,20 @@ struct ContentView: View {
         }
         .environmentObject(favorites)
     }
+    
+     func sortResorts() {
+        switch sortSelection {
+        case 1:
+            sorted = filteredResorts.sorted { $0.name < $1.name }
+        case 2:
+            sorted = filteredResorts.sorted { $0.country < $1.country }
+        default:
+            sorted = filteredResorts
+            
+        }
+        
+    }
+
 }
 
 /* This extension disables slide over view in landscape on bigger iPhones and iPads.
@@ -73,6 +106,7 @@ extension View {
         }
     }
 }
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
