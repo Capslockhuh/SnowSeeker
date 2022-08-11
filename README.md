@@ -3,6 +3,7 @@
 Project 19 of the 100 Days of SwiftUI course by Paul Hudson
 
 This is an app for finding information about ski resorts
+
 Features include:
 - resizing depending on device's display size
 - searching
