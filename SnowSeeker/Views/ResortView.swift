@@ -36,6 +36,10 @@ struct ResortView: View {
                 .background(Color.primary.opacity(0.1))
                 
                 Group {
+                    Text("Image by \(resort.imageCredit)")
+                        .font(.title3)
+                        .foregroundColor(.secondary)
+                    
                     Text(resort.description)
                         .padding(.vertical)
                     
@@ -54,9 +58,6 @@ struct ResortView: View {
                         }
                     }
                     .padding(.vertical)
-                    
-                    Text("Image by \(resort.imageCredit)")
-                        .font(.title3)
                 }
                 .padding(.horizontal)
             }
