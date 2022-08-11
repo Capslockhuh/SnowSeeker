@@ -16,12 +16,16 @@ struct ResortView: View {
     @State private var showingFacility = false
     
     @EnvironmentObject var favorites: Favorites
+    
+    @State private var feedback = UINotificationFeedbackGenerator()
+    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                Image(decorative: resort.id)
-                    .resizable()
-                    .scaledToFit()
+                    Image(decorative: resort.id)
+                        .resizable()
+                        .scaledToFit()
+                        .overlay(ImageOverlay(credit: resort.imageCredit), alignment: .bottomLeading)
                 
                 HStack {
                     if sizeClass == .compact && typeSize > .large {
@@ -36,9 +40,6 @@ struct ResortView: View {
                 .background(Color.primary.opacity(0.1))
                 
                 Group {
-                    Text("Image by \(resort.imageCredit)")
-                        .font(.title3)
-                        .foregroundColor(.secondary)
                     
                     Text(resort.description)
                         .padding(.vertical)
@@ -64,9 +65,13 @@ struct ResortView: View {
             
             Button(favorites.contains(resort) ? "Remove from Favorites" : "Add to Favorites") {
                 if favorites.contains(resort) {
+                    feedback.prepare()
                     favorites.remove(resort)
+                    feedback.notificationOccurred(.warning)
                 } else {
+                    feedback.prepare()
                     favorites.add(resort)
+                    feedback.notificationOccurred(.success)
                 }
             }
             .buttonStyle(.borderedProminent)
@@ -78,6 +83,23 @@ struct ResortView: View {
         } message: { facility in
             Text(facility.description)
         }
+    }
+}
+
+// view for the image credit
+struct ImageOverlay: View {
+    let credit: String
+    var body: some View {
+        ZStack {
+            Text("Photo by \(credit)")
+                .font(.callout)
+                .padding(4)
+                .foregroundColor(.white)
+        }
+        .background(Color.black)
+        .opacity(0.8)
+        .cornerRadius(10.0)
+        .padding(4)
     }
 }
 

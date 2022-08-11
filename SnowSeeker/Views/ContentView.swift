@@ -35,7 +35,8 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             VStack {
-                Section(header: Text("Sort type")) {
+                Section(header: Text("Sort type")
+                    .foregroundColor(isSearching == true ? .secondary : .primary)) {
                     Picker(selection: $sortSelection, label: Text("Sort")) {
                         Text("Default").tag(0)
                         Text("Alphabetical").tag(1)
@@ -82,6 +83,7 @@ struct ContentView: View {
             }
             .navigationTitle("Resorts")
             .searchable(text: $searchText, prompt: "Search for a resort")
+            .onAppear(perform: sortResorts)
             
             WelcomeView()
         }
