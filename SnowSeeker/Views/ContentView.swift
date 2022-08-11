@@ -24,6 +24,14 @@ struct ContentView: View {
     
     @State private var sorted: [Resort] = []
     
+    var isSearching: Bool {
+        if searchText.isEmpty {
+            return false
+        } else {
+            return true
+        }
+    }
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -39,8 +47,9 @@ struct ContentView: View {
                 .onChange(of: sortSelection) { _ in
                     self.sortResorts()
                 }
+                .disabled(isSearching)
                 
-            List(sorted) { resort in
+                List(isSearching == true ? filteredResorts : sorted) { resort in
                 NavigationLink {
                     ResortView(resort: resort)
                 } label: {
