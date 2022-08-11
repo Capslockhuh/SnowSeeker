@@ -54,6 +54,9 @@ struct ResortView: View {
                         }
                     }
                     .padding(.vertical)
+                    
+                    Text("Image by \(resort.imageCredit)")
+                        .font(.title3)
                 }
                 .padding(.horizontal)
             }
